@@ -1,0 +1,36 @@
+name: radhiant_patient_app_fixed
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  image_picker: ^1.0.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.10
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/sis.png
+    - assets/app_icon.png
+    - assets/splash.png
+    - assets/profile_placeholder.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/app_icon.png"
+
+flutter_native_splash:
+  color: "#50C878"  # background color of splash screen
+  image: "assets/splash.png"
+  android: true
+  ios: true
+  android_gravity: center
+  ios_content_mode: center
