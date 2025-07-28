@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/app_drawer.dart';
+import '../widgets/app_header.dart';
 
 class ReportsPage extends StatefulWidget {
   @override
@@ -15,59 +16,78 @@ class _ReportsPageState extends State<ReportsPage> {
   ];
 
   final int completedIndex = 3;
-  String selectedYear = "2025"; // Add this variable
+  String selectedYear = "2025";
+
+  final String userName = "Nomsa Mthembu";
+  final String profileImagePath = 'assets/profile_placeholder.png';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Mammogram Reports")),
-      drawer: AppDrawer(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DropdownButton<String>(
-              value: selectedYear,
-              onChanged: (value) {
-                if (value != null) {
-                  setState(() {
-                    selectedYear = value;
-                  });
-                }
-              },
-              items: ["2025", "2024", "2023"]
-                  .map((year) => DropdownMenuItem(
-                        value: year,
-                        child: Text(year),
-                      ))
-                  .toList(),
+      drawer: AppDrawer(
+        userName: userName,
+        profileImagePath: profileImagePath,
+      ),
+      body: Column(
+        children: [
+          AppHeader(
+            userName: userName,
+            profileImagePath: profileImagePath,
+            onProfileTap: () {
+              Navigator.pushNamed(context, '/profile');
+            },
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  DropdownButton<String>(
+                    value: selectedYear,
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          selectedYear = value;
+                        });
+                      }
+                    },
+                    items: ["2025", "2024", "2023"]
+                        .map((year) => DropdownMenuItem(
+                              value: year,
+                              child: Text(year),
+                            ))
+                        .toList(),
+                  ),
+                  SizedBox(height: 20),
+                  Stepper(
+                    currentStep: completedIndex,
+                    physics: NeverScrollableScrollPhysics(),
+                    steps: steps
+                        .map((step) => Step(
+                              title: Text(step),
+                              content: SizedBox.shrink(),
+                              isActive: steps.indexOf(step) <= completedIndex,
+                            ))
+                        .toList(),
+                    controlsBuilder: (_, __) => SizedBox.shrink(),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => ReportDetailPage()),
+                      );
+                    },
+                    child: Text("View Report"),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 20),
-            Stepper(
-              currentStep: completedIndex,
-              physics: NeverScrollableScrollPhysics(),
-              steps: steps
-                  .map((step) => Step(
-                        title: Text(step),
-                        content: SizedBox.shrink(),
-                        isActive: steps.indexOf(step) <= completedIndex,
-                      ))
-                  .toList(),
-              controlsBuilder: (_, __) => SizedBox.shrink(),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => ReportDetailPage()),
-                );
-              },
-              child: Text("View Report"),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

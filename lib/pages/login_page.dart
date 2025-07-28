@@ -26,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await Future.delayed(const Duration(seconds: 1));
-
       if (!mounted) return;
 
       Navigator.pushReplacementNamed(context, '/home');
@@ -66,9 +65,15 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Welcome Back", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                  const Text(
+                    "Welcome Back",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 8),
-                  const Text("Login to your account", style: TextStyle(fontSize: 16)),
+                  const Text(
+                    "Login to your account",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   const SizedBox(height: 32),
 
                   TextFormField(
@@ -94,7 +99,9 @@ class _LoginPageState extends State<LoginPage> {
                       labelText: 'Password',
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
-                        icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                        icon: Icon(
+                          _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        ),
                         onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                       ),
                     ),
@@ -110,7 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                   if (_errorMessage != null)
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10),
-                      child: Text(_errorMessage!, style: TextStyle(color: theme.colorScheme.error)),
+                      child: Text(
+                        _errorMessage!,
+                        style: TextStyle(color: theme.colorScheme.error),
+                      ),
                     ),
 
                   Row(
@@ -118,7 +128,10 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       TextButton(
                         onPressed: () => debugPrint("Forgot Password tapped"),
-                        child: Text("Forgot Password?", style: TextStyle(color: theme.colorScheme.primary)),
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(color: theme.colorScheme.primary),
+                        ),
                       ),
                     ],
                   ),
@@ -130,25 +143,29 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: _isLoading ? null : _login,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.primary,
+                        foregroundColor: Colors.white, // <-- fix for text color
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       child: _isLoading
                           ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2.5,
-                            ),
-                          ),
-                          SizedBox(width: 16),
-                          Text("Logging in...")
-                        ],
-                      )
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2.5,
+                                  ),
+                                ),
+                                SizedBox(width: 16),
+                                Text("Logging in..."),
+                              ],
+                            )
                           : const Text("Login"),
                     ),
                   ),
@@ -160,7 +177,13 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Don’t have an account? "),
                       GestureDetector(
                         onTap: () => Navigator.pushNamed(context, '/register'),
-                        child: Text("Register", style: TextStyle(color: theme.colorScheme.primary, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          "Register",
+                          style: TextStyle(
+                            color: theme.colorScheme.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
                     ],
                   ),

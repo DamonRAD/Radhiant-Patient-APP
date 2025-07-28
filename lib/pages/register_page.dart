@@ -31,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
     Navigator.pushReplacementNamed(context, '/home');
   }
 
-   @override
+  @override
   void dispose() {
     _firstNameController.dispose();
     _lastNameController.dispose();
@@ -44,9 +44,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
+    String displayName = _firstNameController.text.isNotEmpty
+        ? _firstNameController.text
+        : 'New Patient';
+
     return Scaffold(
       appBar: AppBar(title: Text("Create Account")),
-      drawer: AppDrawer(),
+      drawer: AppDrawer(
+        userName: displayName,
+        profileImagePath: 'assets/profile_placeholder.png',
+      ),
       body: Padding(
         padding: EdgeInsets.all(20),
         child: Form(
@@ -74,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 decoration: InputDecoration(labelText: "Email Address"),
                 keyboardType: TextInputType.emailAddress,
                 validator: (val) =>
-                val == null || !val.contains('@') ? "Enter a valid email" : null,
+                    val == null || !val.contains('@') ? "Enter a valid email" : null,
                 textInputAction: TextInputAction.next,
               ),
               SizedBox(height: 12),
@@ -104,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 obscureText: true,
                 decoration: InputDecoration(labelText: "Confirm Password"),
                 validator: (val) =>
-                val != _passwordController.text ? "Passwords do not match" : null,
+                    val != _passwordController.text ? "Passwords do not match" : null,
                 textInputAction: TextInputAction.done,
               ),
               SizedBox(height: 16),
