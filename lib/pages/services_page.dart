@@ -4,67 +4,55 @@ import '../widgets/app_header.dart';
 
 class ServicesPage extends StatelessWidget {
   final String userName;
-  final String profileImagePath;
 
-  ServicesPage({
-    this.userName = "Nomsa Mthembu",
-    this.profileImagePath = 'assets/profile_placeholder.png',
-  });
+  const ServicesPage({super.key, this.userName = "Nomsa Mthembu"});
 
   @override
   Widget build(BuildContext context) {
-    final services = [
-      'Mobile Mammography',
-      'Breast Health Consultation',
-      'Pap Smear',
-      'Bone Density Scan',
-    ];
-
     return Scaffold(
-      appBar: AppBar(title: Text('Available Services')),
       drawer: AppDrawer(
         userName: userName,
-        profileImagePath: profileImagePath,
+        profileImagePath: 'assets/profile_placeholder.png',
       ),
-      body: Column(
-        children: [
-          AppHeader(
-            userName: userName,
-            profileImagePath: profileImagePath,
-            onProfileTap: () {
-              Navigator.pushNamed(context, '/profile');
-            },
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: services.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ListTile(
-                    title: Text(services[index]),
-                    trailing: ElevatedButton(
-                      onPressed: () => showDialog(
-                        context: context,
-                        builder: (_) => AlertDialog(
-                          title: Text('Schedule Service'),
-                          content: Text('Location/date/time selection coming soon.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: Text('Close'),
-                            ),
-                          ],
-                        ),
-                      ),
-                      child: Text('Schedule Now'),
-                    ),
-                  ),
-                );
-              },
+      body: SafeArea(
+        child: Column(
+          children: [
+            const AppHeader(
+              profileImagePath: 'assets/profile_placeholder.png',
             ),
-          ),
-        ],
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  const Text(
+                    "Available Services",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  serviceCard("Mobile Mammography", "Get checked close to home."),
+                  serviceCard("Ultrasound", "Quick and safe diagnostics."),
+                  serviceCard("X-ray", "Convenient on-site imaging."),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget serviceCard(String title, String description) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        leading: const Icon(Icons.medical_services, color: Colors.teal, size: 30),
+        title: Text(title),
+        subtitle: Text(description),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () {
+          // TODO: Navigate to service details or scheduling
+        },
       ),
     );
   }

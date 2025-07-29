@@ -2,120 +2,74 @@ import 'package:flutter/material.dart';
 import '../widgets/app_drawer.dart';
 import '../widgets/app_header.dart';
 
-class ReportsPage extends StatefulWidget {
-  @override
-  _ReportsPageState createState() => _ReportsPageState();
-}
+class ReportsPage extends StatelessWidget {
+  final String userName;
 
-class _ReportsPageState extends State<ReportsPage> {
-  final List<String> steps = [
-    "Appointment",
-    "Images Sent",
-    "Review",
-    "Complete",
-  ];
-
-  final int completedIndex = 3;
-  String selectedYear = "2025";
-
-  final String userName = "Nomsa Mthembu";
-  final String profileImagePath = 'assets/profile_placeholder.png';
+  const ReportsPage({super.key, this.userName = "Nomsa Mthembu"});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Mammogram Reports")),
       drawer: AppDrawer(
         userName: userName,
-        profileImagePath: profileImagePath,
+        profileImagePath: 'assets/profile_placeholder.png',
       ),
-      body: Column(
-        children: [
-          AppHeader(
-            userName: userName,
-            profileImagePath: profileImagePath,
-            onProfileTap: () {
-              Navigator.pushNamed(context, '/profile');
-            },
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const AppHeader(
+              profileImagePath: 'assets/profile_placeholder.png',
+            ),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16),
                 children: [
-                  DropdownButton<String>(
-                    value: selectedYear,
-                    onChanged: (value) {
-                      if (value != null) {
-                        setState(() {
-                          selectedYear = value;
-                        });
-                      }
-                    },
-                    items: ["2025", "2024", "2023"]
-                        .map((year) => DropdownMenuItem(
-                              value: year,
-                              child: Text(year),
-                            ))
-                        .toList(),
+                  const Text(
+                    "Your Medical Reports",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 20),
-                  Stepper(
-                    currentStep: completedIndex,
-                    physics: NeverScrollableScrollPhysics(),
-                    steps: steps
-                        .map((step) => Step(
-                              title: Text(step),
-                              content: SizedBox.shrink(),
-                              isActive: steps.indexOf(step) <= completedIndex,
-                            ))
-                        .toList(),
-                    controlsBuilder: (_, __) => SizedBox.shrink(),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => ReportDetailPage()),
-                      );
-                    },
-                    child: Text("View Report"),
-                  ),
+                  const SizedBox(height: 16),
+                  reportCard("Mammogram - Jan 2024", "Completed"),
+                  reportCard("Ultrasound - Dec 2023", "In Progress"),
+                  reportCard("X-ray - Nov 2023", "Pending"),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
-}
 
-class ReportDetailPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Report Details")),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: ListView(
-          children: [
-            ListTile(title: Text("Patient Name"), subtitle: Text("Jane Doe")),
-            ListTile(title: Text("Appointment Date"), subtitle: Text("2025-07-12")),
-            ListTile(title: Text("Status"), subtitle: Text("Complete")),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text("Download PDF"),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text("Send to Email"),
-            ),
-          ],
-        ),
+  Widget reportCard(String title, String status) {
+    IconData icon;
+    Color color;
+
+    switch (status) {
+      case "Completed":
+        icon = Icons.check_circle;
+        color = Colors.green;
+        break;
+      case "In Progress":
+        icon = Icons.autorenew;
+        color = Colors.orange;
+        break;
+      default:
+        icon = Icons.schedule;
+        color = Colors.grey;
+    }
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: ListTile(
+        leading: Icon(icon, color: color, size: 32),
+        title: Text(title),
+        subtitle: Text("Status: $status"),
+        trailing: Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () {
+          // TODO: Navigate to report details
+        },
       ),
     );
   }
